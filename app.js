@@ -335,7 +335,21 @@ document.addEventListener('DOMContentLoaded', () => {
       .replace(/'/g, '&#039;');
   }
 
-  // Initialize with Sample Data Preview
-  rawReviews = sampleReviews;
-  updateStatsAndRender();
+  // Saved CSV URL persistence
+  const savedCsvUrl = localStorage.getItem('petal_csv_endpoint');
+  if (savedCsvUrl) {
+    csvUrlInput.value = savedCsvUrl;
+    fetchCsvData(savedCsvUrl);
+  } else {
+    rawReviews = sampleReviews;
+    updateStatsAndRender();
+  }
+
+  loadCsvBtn.addEventListener('click', () => {
+    const url = csvUrlInput.value.trim();
+    if (url) {
+      localStorage.setItem('petal_csv_endpoint', url);
+      fetchCsvData(url);
+    }
+  });
 });
