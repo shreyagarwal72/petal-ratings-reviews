@@ -9,7 +9,7 @@
 
 // OPTIONAL: If creating script standalone via script.google.com instead of inside Google Sheets (Extensions > Apps Script),
 // paste your Google Sheet URL or ID below:
-const SPREADSHEET_ID_OR_URL = ''; 
+const SPREADSHEET_ID_OR_URL = 'https://docs.google.com/spreadsheets/d/13mwnx_aX9OUpKG96YBAVQYG5yKbSI9f1Q5U4AOJF3e4/edit?usp=drivesdk'; 
 
 const MASTER_SHEET_NAME = 'Original form';
 const PUBLIC_SHEET_NAME = 'Website';
