@@ -7,8 +7,38 @@
  * 3. Automatic Trigger: Runs on form submission to sync data without exposing emails or wiping existing replies.
  */
 
+// OPTIONAL: If creating script standalone via script.google.com instead of inside Google Sheets (Extensions > Apps Script),
+// paste your Google Sheet URL or ID below:
+const SPREADSHEET_ID_OR_URL = ''; 
+
 const MASTER_SHEET_NAME = 'Original form';
 const PUBLIC_SHEET_NAME = 'Website';
+
+/**
+ * Safely resolves the target spreadsheet whether container-bound or standalone.
+ */
+function getTargetSpreadsheet() {
+  let ss = SpreadsheetApp.getActiveSpreadsheet();
+  if (!ss && typeof SPREADSHEET_ID_OR_URL !== 'undefined' && SPREADSHEET_ID_OR_URL.trim() !== '') {
+    let input = SPREADSHEET_ID_OR_URL.trim();
+    let sheetId = input;
+    if (input.includes('/d/')) {
+      sheetId = input.split('/d/')[1].split('/')[0];
+    }
+    try {
+      ss = SpreadsheetApp.openById(sheetId);
+    } catch (e) {
+      Logger.log("Error opening spreadsheet by ID: " + e.message);
+    }
+  }
+  
+  if (!ss) {
+    throw new Error(
+      "Spreadsheet not found! If running standalone from script.google.com, please paste your Google Sheet URL into the SPREADSHEET_ID_OR_URL variable at line 11 of Code.gs."
+    );
+  }
+  return ss;
+}
 
 /**
  * Main synchronization function.
@@ -16,7 +46,7 @@ const PUBLIC_SHEET_NAME = 'Website';
  * filtering out email addresses and preserving administrative 'Developer Reply' entries.
  */
 function syncFormResponsesToWebsite() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = getTargetSpreadsheet();
   
   // 1. Locate or create Master Sheet ('Original form')
   let masterSheet = ss.getSheetByName(MASTER_SHEET_NAME);
@@ -122,7 +152,7 @@ function setupPublicSheetHeaders(sheet) {
  * Run this function once in Apps Script to automatically install an 'onFormSubmit' trigger.
  */
 function setupAutoSyncTrigger() {
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = getTargetSpreadsheet();
   
   // Check if trigger already exists
   const existingTriggers = ScriptApp.getUserTriggers(ss);
