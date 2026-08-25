@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Petal Browser - User Ratings & Reviews</title>
+  <meta name="description" content="Official real-time rating score, community reviews, and developer responses for Petal Browser.">
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" />
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Header / Navigation Bar -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand-title">
+        <div class="logo-badge">
+          <span class="material-symbols-rounded">local_flower</span>
+        </div>
+        <div class="brand-text">
+          <h1>Petal Browser</h1>
+          <span class="brand-subtitle">Ratings & Community Reviews</span>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <button id="theme-toggle-btn" class="icon-button" title="Toggle Theme" aria-label="Toggle Theme">
+          <span class="material-symbols-rounded" id="theme-icon">dark_mode</span>
+        </button>
+        <button id="open-form-btn" class="primary-button">
+          <span class="material-symbols-rounded">rate_review</span>
+          <span>Write a Review</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="main-container">
+    
+    <!-- Hero / Rating Summary Section -->
+    <section class="rating-summary-card">
+      <div class="rating-score-box">
+        <div class="big-rating" id="avg-rating-value">0.0</div>
+        <div class="star-rating-display" id="avg-rating-stars">
+          <span class="material-symbols-rounded star">star</span>
+          <span class="material-symbols-rounded star">star</span>
+          <span class="material-symbols-rounded star">star</span>
+          <span class="material-symbols-rounded star">star</span>
+          <span class="material-symbols-rounded star">star</span>
+        </div>
+        <div class="total-reviews-count" id="total-reviews-text">Based on 0 reviews</div>
+      </div>
+
+      <div class="rating-distribution-box">
+        <div class="dist-row">
+          <span class="star-label">5 <span class="material-symbols-rounded star-mini">star</span></span>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" id="bar-5" style="width: 0%;"></div></div>
+          <span class="dist-count" id="count-5">0</span>
+        </div>
+        <div class="dist-row">
+          <span class="star-label">4 <span class="material-symbols-rounded star-mini">star</span></span>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" id="bar-4" style="width: 0%;"></div></div>
+          <span class="dist-count" id="count-4">0</span>
+        </div>
+        <div class="dist-row">
+          <span class="star-label">3 <span class="material-symbols-rounded star-mini">star</span></span>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" id="bar-3" style="width: 0%;"></div></div>
+          <span class="dist-count" id="count-3">0</span>
+        </div>
+        <div class="dist-row">
+          <span class="star-label">2 <span class="material-symbols-rounded star-mini">star</span></span>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" id="bar-2" style="width: 0%;"></div></div>
+          <span class="dist-count" id="count-2">0</span>
+        </div>
+        <div class="dist-row">
+          <span class="star-label">1 <span class="material-symbols-rounded star-mini">star</span></span>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" id="bar-1" style="width: 0%;"></div></div>
+          <span class="dist-count" id="count-1">0</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CSV Data Source Endpoint Settings / Controls -->
+    <section class="endpoint-config-card">
+      <div class="config-header">
+        <span class="material-symbols-rounded icon-accent">database</span>
+        <div>
+          <h3>Public CSV Backend Endpoint</h3>
+          <p class="config-desc">Connect your published Google Sheets CSV URL to load real-time user reviews.</p>
+        </div>
+      </div>
+      
+      <div class="endpoint-input-group">
+        <input type="url" id="csv-url-input" placeholder="Paste Published Google Sheets CSV URL here..." 
+               value="https://docs.google.com/spreadsheets/d/e/2PACX-1vSampleEndpointID/pub?gid=0&single=true&output=csv">
+        <button id="load-csv-btn" class="secondary-button">
+          <span class="material-symbols-rounded">sync</span>
+          <span>Load Data</span>
+        </button>
+      </div>
+      <div class="endpoint-status" id="endpoint-status-msg">
+        <span class="status-indicator"></span> Ready
+      </div>
+    </section>
+
+    <!-- Filters & Search Toolbar -->
+    <section class="toolbar-section">
+      <div class="search-box">
+        <span class="material-symbols-rounded search-icon">search</span>
+        <input type="text" id="search-input" placeholder="Search reviews or keywords...">
+      </div>
+
+      <div class="filter-pills">
+        <button class="filter-pill active" data-rating="all">All</button>
+        <button class="filter-pill" data-rating="5">5 <span class="material-symbols-rounded star-mini">star</span></button>
+        <button class="filter-pill" data-rating="4">4 <span class="material-symbols-rounded star-mini">star</span></button>
+        <button class="filter-pill" data-rating="3">3 <span class="material-symbols-rounded star-mini">star</span></button>
+        <button class="filter-pill" data-rating="2">2 <span class="material-symbols-rounded star-mini">star</span></button>
+        <button class="filter-pill" data-rating="1">1 <span class="material-symbols-rounded star-mini">star</span></button>
+        <button class="filter-pill" data-filter="replied">Developer Replied</button>
+      </div>
+    </section>
+
+    <!-- Reviews Grid / List -->
+    <section class="reviews-section">
+      <div id="reviews-list" class="reviews-grid">
+        <!-- Dynamic Review Cards Rendered via JS -->
+      </div>
+      
+      <div id="empty-state" class="empty-state hidden">
+        <span class="material-symbols-rounded empty-icon">sentiment_dissatisfied</span>
+        <h3>No Reviews Found</h3>
+        <p>No matching reviews found for your selected filters or search query.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Submit Review Modal -->
+  <div id="form-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2>Submit Your Petal Review</h2>
+        <button id="close-modal-btn" class="icon-button" title="Close" aria-label="Close Modal">
+          <span class="material-symbols-rounded">close</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Share your feedback for Petal Browser. Google Sign-In is required by our intake form to prevent duplicates and allow response edits.</p>
+        <div class="form-link-box">
+          <label for="form-url-input">Google Form Intake URL:</label>
+          <input type="text" id="form-url-input" value="https://forms.google.com/your-petal-intake-form-url" readonly>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="cancel-modal-btn" class="secondary-button">Cancel</button>
+        <a id="open-google-form-link" href="#" target="_blank" class="primary-button">
+          <span>Open Google Form</span>
+          <span class="material-symbols-rounded">open_in_new</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="app-footer">
+    <p>Petal Browser Community Reviews • Synchronized with Google Sheets Public CSV Backend</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
